@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  app:
+    image: moonaz023/crud:0.0.2
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db_moonaz023:5431/crud
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - postgres-db_moonaz023
+
+
+
+  postgres-db_moonaz023:
+    container_name: postgres-db_moonaz023
+    image: postgres
+    environment:
+      POSTGRES_DB: crud
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: root
+      PGDATA: /data/postgres
+    volumes:
+      - ./app:/data/postgres
+    expose:
+      - "5431"
+    ports:
+      - "5431:5431"
+    command: -p 5431
+    restart: unless-stopped
